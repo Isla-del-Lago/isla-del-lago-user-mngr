@@ -1,40 +1,56 @@
 package com.isladellago.usermanager.controller;
 
-import com.isladellago.usermanager.dto.TokenDto;
+import com.isladellago.usermanager.dto.SuccessfulLoginDTO;
+import com.isladellago.usermanager.dto.UserLoginDTO;
+import com.isladellago.usermanager.model.User;
 import com.isladellago.usermanager.service.TokenService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.isladellago.usermanager.service.UserService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 /**
  * This class hold all token related functionalities
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 @CrossOrigin("*")
+@Log4j2
 public class TokenController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TokenController.class);
-
-    private TokenService tokenService;
-
-    @PostMapping("/token")
-    public final ResponseEntity<TokenDto> generateToken() {
-        LOGGER.info("[GENERATE TOKEN CONTROLLER] REQUEST RECEIVED");
-
-        final TokenDto tokenDto = tokenService.generateToken();
-
-        return new ResponseEntity<>(tokenDto, HttpStatus.CREATED);
-    }
+    private final TokenService tokenService;
+    private final UserService userService;
 
     @Autowired
-    public void setTokenService(TokenService tokenService) {
+    public TokenController(
+            @Qualifier("jwtsTokenService") TokenService tokenService,
+            UserService userService) {
+
         this.tokenService = tokenService;
+        this.userService = userService;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<SuccessfulLoginDTO> login(@RequestBody UserLoginDTO userLoginDTO) {
+        log.info("[Login] Request received, user email: {}",
+                userLoginDTO.getEmail());
+
+        final User user = userService.getUserByEmail(userLoginDTO.getEmail());
+
+        final String token = tokenService.generateToken(user);
+        final UUID uuid = UUID.randomUUID();
+
+        final SuccessfulLoginDTO loginResponse = SuccessfulLoginDTO.builder()
+                .uuid(uuid)
+                .token(token)
+                .build();
+
+        log.info("[Login] Generated uuid and token: {}", loginResponse.toString());
+
+        return ResponseEntity.ok(loginResponse);
     }
 }
