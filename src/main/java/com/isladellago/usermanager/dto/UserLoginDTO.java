@@ -1,18 +1,16 @@
 package com.isladellago.usermanager.dto;
 
-import com.sun.istack.NotNull;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
 /**
  * This class maps the fields that the user enter to login
  * into the application.
  */
-@Data
+@Getter
+@Builder
 public final class UserLoginDTO {
 
-    @NotNull
     private final String email;
-
-    @NotNull
     private final String password;
 }

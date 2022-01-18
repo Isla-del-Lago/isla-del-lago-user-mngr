@@ -5,19 +5,16 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.isladellago.usermanager.model.User;
 import com.isladellago.usermanager.service.TokenService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service("auth0TokenService")
+@Log4j2
 public class Auth0TokenServiceImpl implements TokenService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Auth0TokenServiceImpl.class);
-
-    @Value("${jwt.signature.secret}")
     private String keySecret;
 
     @Override
@@ -27,11 +24,11 @@ public class Auth0TokenServiceImpl implements TokenService {
             final String token = JWT.create()
                     .sign(algorithm);
 
-            LOGGER.info("[GENERATE TOKEN] GENERATED TOKEN: {}", token);
+            log.info("[Generate token] Generated token: {}", token);
 
             return token;
         } catch (JWTCreationException exception) {
-            LOGGER.error("[GENERATE TOKEN] ERROR CREATING THE TOKEN");
+            log.error("[Generate token] Error creating the token");
 
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -45,5 +42,10 @@ public class Auth0TokenServiceImpl implements TokenService {
     @Override
     public String getEmailFromToken(String token) {
         return "prueba@isladellago.com";
+    }
+
+    @Value("${jwt.signature.secret}")
+    public void setKeySecret(String keySecret) {
+        this.keySecret = keySecret;
     }
 }
