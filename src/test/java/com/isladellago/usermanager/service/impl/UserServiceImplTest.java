@@ -65,7 +65,7 @@ public class UserServiceImplTest {
         Assert.assertFalse(user.isAccountNonExpired());
         Assert.assertFalse(user.isAccountNonLocked());
         Assert.assertFalse(user.isCredentialsNonExpired());
-        Assert.assertNull(user.getAuthorities());
+        Assert.assertEquals(0, user.getAuthorities().size());
     }
 
     @Test(expected = ResponseStatusException.class)
