@@ -1,5 +1,6 @@
 package com.isladellago.usermanager.controller;
 
+import com.isladellago.usermanager.dto.CreateUserDTO;
 import com.isladellago.usermanager.dto.CreateUserResponseDTO;
 import com.isladellago.usermanager.model.User;
 import com.isladellago.usermanager.service.UserService;
@@ -24,7 +25,7 @@ public class UserControllerTest {
     private static final String TOKEN = UUID.randomUUID().toString();
     private static final int USER_ID = 1;
 
-    private User user;
+    private CreateUserDTO createUserDTO;
 
     @Mock
     private UserService userService;
@@ -39,10 +40,9 @@ public class UserControllerTest {
 
     @Before
     public final void initFields() {
-        user = User.builder()
+        createUserDTO = CreateUserDTO.builder()
                 .email(LOGIN_EMAIL)
                 .fullName(USER_FULL_NAME)
-                .id(USER_ID)
                 .password(LOGIN_PASSWORD)
                 .build();
     }
@@ -53,10 +53,10 @@ public class UserControllerTest {
                 .thenReturn(USER_ID);
 
         final ResponseEntity<CreateUserResponseDTO> response =
-                userController.create(user);
+                userController.create(createUserDTO);
 
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.CREATED);
-        Assert.assertEquals((int) response.getBody().getUserId(), USER_ID);
+        Assert.assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        Assert.assertEquals(USER_ID, (int) response.getBody().getUserId());
     }
 
     @Test

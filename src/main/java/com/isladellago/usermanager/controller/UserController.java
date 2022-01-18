@@ -1,5 +1,6 @@
 package com.isladellago.usermanager.controller;
 
+import com.isladellago.usermanager.dto.CreateUserDTO;
 import com.isladellago.usermanager.dto.CreateUserResponseDTO;
 import com.isladellago.usermanager.model.User;
 import com.isladellago.usermanager.service.UserService;
@@ -24,8 +25,14 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/create")
-    public final ResponseEntity<CreateUserResponseDTO> create(@RequestBody User user) {
-        log.info("[Create user] Request received, user email: {}", user.getEmail());
+    public final ResponseEntity<CreateUserResponseDTO> create(@RequestBody CreateUserDTO createUserDTO) {
+        log.info("[Create user] Request received, user email: {}", createUserDTO.getEmail());
+
+        final User user = User.builder()
+                .email(createUserDTO.getEmail())
+                .password(createUserDTO.getPassword())
+                .fullName(createUserDTO.getFullName())
+                .build();
 
         final Integer userId = userService.createUser(user);
 

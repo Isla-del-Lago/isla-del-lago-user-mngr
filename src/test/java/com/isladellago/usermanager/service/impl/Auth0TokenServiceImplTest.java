@@ -39,6 +39,6 @@ public class Auth0TokenServiceImplTest {
 
     @Test
     public final void testGetEmailFromToken() {
-        Assert.assertEquals(auth0TokenService.getEmailFromToken(TOKEN), "prueba@isladellago.com");
+        Assert.assertEquals("prueba@isladellago.com", auth0TokenService.getEmailFromToken(TOKEN));
     }
 }
