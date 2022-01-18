@@ -1,6 +1,7 @@
 package com.isladellago.usermanager.dto;
 
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Data;
  * into the application.
  */
 @Data
+@Builder
 public final class UserLoginDTO {
 
     @NotNull
