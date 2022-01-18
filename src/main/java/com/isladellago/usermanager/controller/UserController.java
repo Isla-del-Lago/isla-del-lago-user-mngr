@@ -23,12 +23,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/health")
-    public final ResponseEntity<String> health() {
-        return ResponseEntity
-                .ok("Service is healthy");
-    }
-
     @PostMapping("/create")
     public final ResponseEntity<CreateUserResponseDTO> create(@RequestBody User user) {
         log.info("[Create user] Request received, user email: {}", user.getEmail());

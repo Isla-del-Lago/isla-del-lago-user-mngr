@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.UUID;
 
 public class UserControllerTest {
@@ -56,5 +57,16 @@ public class UserControllerTest {
 
         Assert.assertEquals(response.getStatusCode(), HttpStatus.CREATED);
         Assert.assertEquals((int) response.getBody().getUserId(), USER_ID);
+    }
+
+    @Test
+    public final void testGetAllUsers() {
+        Mockito.when(userService.getAllUsers()).thenReturn(List.of());
+
+        final ResponseEntity<List<User>> response =
+                userController.getAllUsers(UUID.randomUUID(), UUID.randomUUID().toString());
+
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assert.assertEquals(0, response.getBody().size());
     }
 }

@@ -18,7 +18,6 @@ public class JwtsTokenServiceImpl implements TokenService {
     private static final Date EXPIRATION_LIMIT_DATE =
             new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000);
 
-    @Value("${jwt.signature.secret}")
     private String jwtSignatureSecret;
 
     @Override
@@ -68,5 +67,10 @@ public class JwtsTokenServiceImpl implements TokenService {
                 .parseClaimsJws(token)
                 .getBody()
                 .get(CustomJwtClaims.EMAIL_CLAIM, String.class);
+    }
+
+    @Value("${jwt.signature.secret}")
+    public void setJwtSignatureSecret(String jwtSignatureSecret) {
+        this.jwtSignatureSecret = jwtSignatureSecret;
     }
 }

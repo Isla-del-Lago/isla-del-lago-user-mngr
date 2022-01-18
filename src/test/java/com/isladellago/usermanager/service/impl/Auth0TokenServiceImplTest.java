@@ -1,25 +1,19 @@
 package com.isladellago.usermanager.service.impl;
 
 import com.isladellago.usermanager.model.User;
-import io.jsonwebtoken.lang.Assert;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
 
 import java.util.UUID;
 
 public class Auth0TokenServiceImplTest {
 
+    private static final String TOKEN = UUID.randomUUID().toString();
+
     private User user;
 
-    @InjectMocks
-    private Auth0TokenServiceImpl auth0TokenService;
-
-    @Before
-    public final void initMocks() {
-        MockitoAnnotations.openMocks(this);
-    }
+    private Auth0TokenServiceImpl auth0TokenService = new Auth0TokenServiceImpl();
 
     @Before
     public final void initPropertyValues() {
@@ -35,6 +29,16 @@ public class Auth0TokenServiceImplTest {
     public final void testGenerateToken() {
         final String token = auth0TokenService.generateToken(user);
 
-        Assert.notNull(token);
+        Assert.assertNotNull(token);
+    }
+
+    @Test
+    public final void testValidateIsFalse() {
+        Assert.assertFalse(auth0TokenService.validate(TOKEN));
+    }
+
+    @Test
+    public final void testGetEmailFromToken() {
+        Assert.assertEquals(auth0TokenService.getEmailFromToken(TOKEN), "prueba@isladellago.com");
     }
 }
