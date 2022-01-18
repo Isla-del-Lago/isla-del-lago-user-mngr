@@ -1,5 +1,8 @@
 name: code-verify
-on: pull_request
+on:
+  push:
+    branches:
+      - 'feature/*'
 
 jobs:
   build_project:
