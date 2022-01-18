@@ -68,7 +68,7 @@ public class TokenControllerTest {
         final ResponseEntity<SuccessfulLoginDTO> response =
                 tokenController.login(userLoginDTO);
 
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
-        Assert.assertEquals(response.getBody().getToken(), TOKEN);
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assert.assertEquals(TOKEN, response.getBody().getToken());
     }
 }

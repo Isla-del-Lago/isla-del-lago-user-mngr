@@ -1,7 +1,6 @@
 package com.isladellago.usermanager.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -24,20 +24,16 @@ public final class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull
     @Column
     private String email;
 
-    @NotNull
     @Column
     @JsonIgnore
     private String password;
 
-    @NotNull
     @Column(name = "full_name")
     private String fullName;
 
-    @NotNull
     @Column(name = "creation_date")
     @JsonIgnore
     private final Date creationDate = new Date();
@@ -49,7 +45,7 @@ public final class User implements UserDetails {
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of();
     }
 
     @Override
