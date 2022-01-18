@@ -23,6 +23,7 @@ public class TokenControllerTest {
     private static final String LOGIN_PASSWORD = "Pruebas1234";
     private static final String USER_FULL_NAME = "Johan Camilo Lopez Giron";
     private static final String TOKEN = UUID.randomUUID().toString();
+    private static final int USER_ID = 1;
 
     private UserLoginDTO userLoginDTO;
     private User user;
@@ -51,7 +52,7 @@ public class TokenControllerTest {
         user = User.builder()
                 .email(LOGIN_EMAIL)
                 .fullName(USER_FULL_NAME)
-                .id(1)
+                .id(USER_ID)
                 .password(LOGIN_PASSWORD)
                 .build();
     }
