@@ -42,7 +42,7 @@ jobs:
         shell: bash
         env:
           PROJECT_KEY: Isla-del-Lago_isla-del-lago-user-mngr
-          BRANCH: ${{ github.ref }}
+          BRANCH: ${GITHUB_REF#refs/heads/}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           echo "Analysis on branch $BRANCH"
