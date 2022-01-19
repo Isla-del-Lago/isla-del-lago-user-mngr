@@ -28,13 +28,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
-        log.info("[Get user by email] method start, email: {}", email);
+        log.info("[Get user by email] Method start, email: {}", email);
         return userRepository
                 .findByEmail(email)
                 .orElseThrow(
-                        () -> new ResponseStatusException(
-                                HttpStatus.NOT_FOUND,
-                                String.format("User with email: %s not found", email))
+                        () -> {
+                            log.error("[Get user by email] User with email: {} not found", email);
+                            return new ResponseStatusException(
+                                    HttpStatus.NOT_FOUND,
+                                    String.format("User with email: %s not found", email));
+                        }
                 );
     }
 
@@ -44,3 +47,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 }
+|
