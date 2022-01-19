@@ -37,3 +37,24 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Isla-del-Lago_isla-del-lago-user-mngr
+
+      - name: Validate sonar analysis result
+        shell: bash
+        env:
+          PROJECT_KEY: Isla-del-Lago_isla-del-lago-user-mngr
+          BRANCH: ${ GITHUB_REF##*/ }
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          projectStatus=$(curl --location --request GET "https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT_KEY&branch=$BRANCH" --header "Authorization: Bearer $SONAR_TOKEN")
+
+          projectStatusErrorString=*"\"projectStatus\":{\"status\":\"ERROR\""*
+
+          echo "$projectStatus"
+
+          if [[ $projectStatus ==  $projectStatusErrorString ]];
+          then
+              echo "Project status error found"
+              exit 1
+          else
+              echo "Project status error not found"
+          fi
