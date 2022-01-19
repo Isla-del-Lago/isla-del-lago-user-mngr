@@ -42,11 +42,10 @@ jobs:
         shell: bash
         env:
           PROJECT_KEY: Isla-del-Lago_isla-del-lago-user-mngr
-          BRANCH: ${GITHUB_REF#refs/heads/}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          echo "Analysis on branch $BRANCH"
-          projectStatus=$(curl --location --request GET "https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT_KEY&branch=$BRANCH" --header "Authorization: Bearer $SONAR_TOKEN")
+          echo "Analysis on branch ${GITHUB_REF#refs/heads/}"
+          projectStatus=$(curl --location --request GET "https://sonarcloud.io/api/qualitygates/project_status?projectKey=$PROJECT_KEY&branch=${GITHUB_REF#refs/heads/}" --header "Authorization: Bearer $SONAR_TOKEN")
 
           projectStatusErrorString=*"\"projectStatus\":{\"status\":\"ERROR\""*
 
