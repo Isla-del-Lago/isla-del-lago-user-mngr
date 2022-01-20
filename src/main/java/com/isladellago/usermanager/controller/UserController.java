@@ -1,8 +1,8 @@
 package com.isladellago.usermanager.controller;
 
-import com.isladellago.usermanager.dto.CreateUserDTO;
-import com.isladellago.usermanager.dto.CreateUserResponseDTO;
-import com.isladellago.usermanager.model.User;
+import com.isladellago.usermanager.domain.dto.CreateUserDTO;
+import com.isladellago.usermanager.domain.dto.CreateUserResponseDTO;
+import com.isladellago.usermanager.domain.model.User;
 import com.isladellago.usermanager.service.UserService;
 import com.isladellago.usermanager.util.CustomHttpHeaders;
 import lombok.AllArgsConstructor;
@@ -54,6 +54,21 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.getAllUsers());
+    }
+
+    @DeleteMapping
+    public final ResponseEntity<Void> deleteUserByEmail(
+            @RequestHeader(CustomHttpHeaders.UUID_HEADER) UUID uuid,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
+            @RequestParam("userId") String userEmail) {
+        log.info("[Delete user by email] Request received, user email: {}, uuid: {}, token: {}",
+                userEmail, uuid, authToken);
+
+        userService.deleteUserByEmail(userEmail);
+
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 
 }

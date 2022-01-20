@@ -1,6 +1,6 @@
 package com.isladellago.usermanager.service.impl;
 
-import com.isladellago.usermanager.model.User;
+import com.isladellago.usermanager.domain.model.User;
 import com.isladellago.usermanager.service.TokenService;
 import com.isladellago.usermanager.util.CustomJwtClaims;
 import io.jsonwebtoken.*;

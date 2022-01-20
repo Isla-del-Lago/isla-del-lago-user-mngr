@@ -1,4 +1,4 @@
-package com.isladellago.usermanager.dto;
+package com.isladellago.usermanager.domain.dto;
 
 import lombok.Builder;
 import lombok.Data;

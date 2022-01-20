@@ -1,8 +1,8 @@
 package com.isladellago.usermanager.controller;
 
-import com.isladellago.usermanager.dto.CreateUserDTO;
-import com.isladellago.usermanager.dto.CreateUserResponseDTO;
-import com.isladellago.usermanager.model.User;
+import com.isladellago.usermanager.domain.dto.CreateUserDTO;
+import com.isladellago.usermanager.domain.dto.CreateUserResponseDTO;
+import com.isladellago.usermanager.domain.model.User;
 import com.isladellago.usermanager.service.UserService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -64,9 +64,18 @@ public class UserControllerTest {
         Mockito.when(userService.getAllUsers()).thenReturn(List.of());
 
         final ResponseEntity<List<User>> response =
-                userController.getAllUsers(UUID.randomUUID(), UUID.randomUUID().toString());
+                userController.getAllUsers(UUID.randomUUID(), TOKEN);
 
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assert.assertEquals(0, response.getBody().size());
+    }
+
+    @Test
+    public final void testDeleteUserByEmail() {
+        Mockito.doNothing().when(userService).deleteUserByEmail(LOGIN_EMAIL);
+
+        userController.deleteUserByEmail(UUID.randomUUID(), TOKEN, LOGIN_EMAIL);
+
+        Mockito.verify(userService).deleteUserByEmail(LOGIN_EMAIL);
     }
 }
