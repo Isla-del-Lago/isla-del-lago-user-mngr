@@ -103,4 +103,13 @@ public class UserServiceImplTest {
                 .thenThrow(new NullPointerException());
         userService.createUser(user);
     }
+
+    @Test
+    public final void testDeleteUserByEmail() {
+        Mockito.doNothing().when(userRepository).deleteByEmail(EMAIL);
+
+        userService.deleteUserByEmail(EMAIL);
+
+        Mockito.verify(userRepository).deleteByEmail(EMAIL);
+    }
 }
