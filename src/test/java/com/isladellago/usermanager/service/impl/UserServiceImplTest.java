@@ -2,6 +2,8 @@ package com.isladellago.usermanager.service.impl;
 
 import com.isladellago.usermanager.domain.model.User;
 import com.isladellago.usermanager.domain.model.UserRepository;
+import com.isladellago.usermanager.exception.ErrorCreatingUserException;
+import com.isladellago.usermanager.exception.UserAlreadyCreatedException;
 import com.isladellago.usermanager.exception.UserNotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 import java.util.Optional;
@@ -85,5 +88,19 @@ public class UserServiceImplTest {
 
         Assert.assertNotNull(users);
         Assert.assertEquals(0, users.size());
+    }
+
+    @Test(expected = UserAlreadyCreatedException.class)
+    public final void testCreateUserIsCreated() {
+        Mockito.when(userRepository.save(user))
+                .thenThrow(new DataIntegrityViolationException(""));
+        userService.createUser(user);
+    }
+
+    @Test(expected = ErrorCreatingUserException.class)
+    public final void testErrorCreatingUser() {
+        Mockito.when(userRepository.save(user))
+                .thenThrow(new NullPointerException());
+        userService.createUser(user);
     }
 }

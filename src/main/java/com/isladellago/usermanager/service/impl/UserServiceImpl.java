@@ -28,10 +28,12 @@ public class UserServiceImpl implements UserService {
                     .save(user)
                     .getId();
         } catch (DataIntegrityViolationException ex) {
+            log.error(ex.getMessage());
             throw new UserAlreadyCreatedException(
                     user.getEmail(), user.getFullName()
             );
         } catch (Exception ex) {
+            log.error(ex);
             throw new ErrorCreatingUserException(user.getEmail());
         }
     }

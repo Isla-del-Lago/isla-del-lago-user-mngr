@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserAlreadyCreatedException.class)
-    public final ResponseEntity<ErrorResponseDTO> handleUserAlreadyCreatedException(
+    public final ResponseEntity<ErrorResponseDTO> handleUserAlreadyCreated(
             UserAlreadyCreatedException ex) {
         log.error("User with email: {} or full name: {} is already created",
                 ex.getEmail(), ex.getFullName());
