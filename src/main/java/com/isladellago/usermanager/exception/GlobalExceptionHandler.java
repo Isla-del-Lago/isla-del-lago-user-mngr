@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handleUserNotFound(UserNotFoundException ex) {
+    public final ResponseEntity<ErrorResponseDTO> handleUserNotFound(
+            UserNotFoundException ex) {
         log.error("User with email: {} not found", ex.getEmail());
 
         final ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
@@ -27,8 +28,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserAlreadyCreatedException.class)
-    public ResponseEntity<ErrorResponseDTO> handleUserAlreadyCreatedException(UserAlreadyCreatedException ex) {
-        log.error("User with email: {} is already created", ex.getEmail());
+    public final ResponseEntity<ErrorResponseDTO> handleUserAlreadyCreatedException(
+            UserAlreadyCreatedException ex) {
+        log.error("User with email: {} or full name: {} is already created",
+                ex.getEmail(), ex.getFullName());
 
         final ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
                 .error(ErrorCodeEnum.L101.getErrorMessage())
@@ -37,6 +40,21 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
+                .body(errorResponseDTO);
+    }
+
+    @ExceptionHandler(ErrorCreatingUserException.class)
+    public final ResponseEntity<ErrorResponseDTO> handleErrorCreatingUser(
+            ErrorCreatingUserException ex) {
+        log.error("Error creating user with email: {}", ex.getEmail());
+
+        final ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
+                .error(ErrorCodeEnum.L100.getErrorMessage())
+                .errorCode(ErrorCodeEnum.L100.getErrorCode())
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .body(errorResponseDTO);
     }
 }

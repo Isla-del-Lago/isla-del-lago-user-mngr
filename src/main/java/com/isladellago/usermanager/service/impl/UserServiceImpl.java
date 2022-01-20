@@ -2,11 +2,13 @@ package com.isladellago.usermanager.service.impl;
 
 import com.isladellago.usermanager.domain.model.User;
 import com.isladellago.usermanager.domain.model.UserRepository;
+import com.isladellago.usermanager.exception.ErrorCreatingUserException;
 import com.isladellago.usermanager.exception.UserAlreadyCreatedException;
 import com.isladellago.usermanager.exception.UserNotFoundException;
 import com.isladellago.usermanager.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +27,12 @@ public class UserServiceImpl implements UserService {
             return userRepository
                     .save(user)
                     .getId();
+        } catch (DataIntegrityViolationException ex) {
+            throw new UserAlreadyCreatedException(
+                    user.getEmail(), user.getFullName()
+            );
         } catch (Exception ex) {
-            throw new UserAlreadyCreatedException(user.getEmail());
+            throw new ErrorCreatingUserException(user.getEmail());
         }
     }
 

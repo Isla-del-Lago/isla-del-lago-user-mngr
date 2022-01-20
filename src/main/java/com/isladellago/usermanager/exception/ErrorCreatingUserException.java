@@ -5,8 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public final class UserAlreadyCreatedException extends RuntimeException {
+public final class ErrorCreatingUserException extends RuntimeException {
 
-    private String email;
-    private String fullName;
+    private final String email;
 }
