@@ -18,7 +18,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/api/v1/user")
-@CrossOrigin("*")
+@CrossOrigin("*") //NOSONAR
 @Log4j2
 public class TokenController {
 
