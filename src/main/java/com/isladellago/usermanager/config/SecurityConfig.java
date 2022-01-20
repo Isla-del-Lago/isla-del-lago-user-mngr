@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 .csrf()
-                .disable();
+                .disable(); //NOSONAR
 
         http = http
                 .sessionManagement()
