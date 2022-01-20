@@ -1,7 +1,7 @@
 package com.isladellago.usermanager.service.impl;
 
-import com.isladellago.usermanager.model.User;
-import com.isladellago.usermanager.model.UserRepository;
+import com.isladellago.usermanager.domain.model.User;
+import com.isladellago.usermanager.domain.model.UserRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

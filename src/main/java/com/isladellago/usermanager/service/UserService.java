@@ -1,6 +1,6 @@
 package com.isladellago.usermanager.service;
 
-import com.isladellago.usermanager.model.User;
+import com.isladellago.usermanager.domain.model.User;
 
 import java.util.List;
 
@@ -29,4 +29,12 @@ public interface UserService {
      * @return List with all fetched users.
      */
     List<User> getAllUsers();
+
+    /**
+     * Deletes a user from the database by
+     * the given email.
+     *
+     * @param userEmail User email to be deleted.
+     */
+    void deleteUserByEmail(String userEmail);
 }

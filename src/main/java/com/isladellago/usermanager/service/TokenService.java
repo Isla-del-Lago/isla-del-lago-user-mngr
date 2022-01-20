@@ -1,6 +1,6 @@
 package com.isladellago.usermanager.service;
 
-import com.isladellago.usermanager.model.User;
+import com.isladellago.usermanager.domain.model.User;
 
 /**
  * Token functionalities

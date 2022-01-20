@@ -1,4 +1,4 @@
-package com.isladellago.usermanager.model;
+package com.isladellago.usermanager.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;

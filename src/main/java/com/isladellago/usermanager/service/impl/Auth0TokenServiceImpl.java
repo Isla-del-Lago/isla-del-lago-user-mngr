@@ -3,7 +3,7 @@ package com.isladellago.usermanager.service.impl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import com.isladellago.usermanager.model.User;
+import com.isladellago.usermanager.domain.model.User;
 import com.isladellago.usermanager.service.TokenService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
