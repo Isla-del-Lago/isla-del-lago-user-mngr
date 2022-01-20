@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/user")
-@CrossOrigin("*")
+@CrossOrigin("*") //NOSONAR
 @Log4j2
 @AllArgsConstructor
 public class UserController {
@@ -60,7 +60,7 @@ public class UserController {
     public final ResponseEntity<Void> deleteUserByEmail(
             @RequestHeader(CustomHttpHeaders.UUID_HEADER) UUID uuid,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
-            @RequestParam("userId") String userEmail) {
+            @RequestParam("userEmail") String userEmail) {
         log.info("[Delete user by email] Request received, user email: {}, uuid: {}, token: {}",
                 userEmail, uuid, authToken);
 

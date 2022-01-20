@@ -7,5 +7,6 @@ import lombok.Getter;
 @Builder
 public final class CreateUserResponseDTO {
 
-    private Integer userId;
+    private final Integer userId;
+    private final String message = "User created";
 }
