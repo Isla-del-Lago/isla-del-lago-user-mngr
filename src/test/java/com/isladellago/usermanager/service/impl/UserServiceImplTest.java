@@ -2,6 +2,7 @@ package com.isladellago.usermanager.service.impl;
 
 import com.isladellago.usermanager.domain.model.User;
 import com.isladellago.usermanager.domain.model.UserRepository;
+import com.isladellago.usermanager.exception.UserNotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +69,7 @@ public class UserServiceImplTest {
         Assert.assertEquals(0, user.getAuthorities().size());
     }
 
-    @Test(expected = ResponseStatusException.class)
+    @Test(expected = UserNotFoundException.class)
     public final void testGetUserByEmailDoesNotExists() {
         Mockito.when(userRepository.findByEmail(EMAIL))
                 .thenReturn(Optional.empty());
