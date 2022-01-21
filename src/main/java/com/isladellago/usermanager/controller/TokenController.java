@@ -3,6 +3,7 @@ package com.isladellago.usermanager.controller;
 import com.isladellago.usermanager.domain.dto.SuccessfulLoginDTO;
 import com.isladellago.usermanager.domain.dto.UserLoginDTO;
 import com.isladellago.usermanager.domain.model.User;
+import com.isladellago.usermanager.exception.BadCredentialsException;
 import com.isladellago.usermanager.service.TokenService;
 import com.isladellago.usermanager.service.UserService;
 import lombok.extern.log4j.Log4j2;
@@ -38,6 +39,10 @@ public class TokenController {
     public ResponseEntity<SuccessfulLoginDTO> login(@RequestBody UserLoginDTO userLoginDTO) {
         log.info("[Login] Request received, user email: {}",
                 userLoginDTO.getEmail());
+
+        if (!userService.hasValidCredentials(userLoginDTO)) {
+            throw new BadCredentialsException(userLoginDTO.getEmail());
+        }
 
         final User user = userService.getUserByEmail(userLoginDTO.getEmail());
 

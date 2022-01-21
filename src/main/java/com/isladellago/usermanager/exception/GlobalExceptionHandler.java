@@ -18,12 +18,12 @@ public class GlobalExceptionHandler {
         log.error("User with email: {} not found", ex.getEmail());
 
         final ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
-                .error(ErrorCodeEnum.L001.getErrorMessage())
-                .errorCode(ErrorCodeEnum.L001.getErrorCode())
+                .error(ErrorCodeEnum.L102.getErrorMessage())
+                .errorCode(ErrorCodeEnum.L102.getErrorCode())
                 .build();
 
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.NOT_FOUND)
                 .body(errorResponseDTO);
     }
 
@@ -51,6 +51,21 @@ public class GlobalExceptionHandler {
         final ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
                 .error(ErrorCodeEnum.L100.getErrorMessage())
                 .errorCode(ErrorCodeEnum.L100.getErrorCode())
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponseDTO);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public final ResponseEntity<ErrorResponseDTO> handleBadCredentials(
+            BadCredentialsException ex) {
+        log.error("Bad credentials for user email: {}", ex.getEmail());
+
+        final ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
+                .error(ErrorCodeEnum.L001.getErrorMessage())
+                .errorCode(ErrorCodeEnum.L001.getErrorCode())
                 .build();
 
         return ResponseEntity
