@@ -71,4 +71,19 @@ public class UserController {
                 .build();
     }
 
+    @GetMapping("/email")
+    public final ResponseEntity<User> getUserByEmail(
+            @RequestHeader(CustomHttpHeaders.UUID_HEADER) UUID uuid,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
+            @RequestParam("userEmail") String userEmail) {
+        log.info("[Get user by email] Request received, email: {}, uuid: {}, token: {}",
+                userEmail, uuid, authToken);
+
+        final User user = userService.getUserByEmail(userEmail);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(user);
+    }
+
 }

@@ -1,7 +1,9 @@
 package com.isladellago.usermanager.service.impl;
 
+import com.isladellago.usermanager.domain.dto.UserLoginDTO;
 import com.isladellago.usermanager.domain.model.User;
 import com.isladellago.usermanager.domain.model.UserRepository;
+import com.isladellago.usermanager.exception.BadCredentialsException;
 import com.isladellago.usermanager.exception.ErrorCreatingUserException;
 import com.isladellago.usermanager.exception.UserAlreadyCreatedException;
 import com.isladellago.usermanager.exception.UserNotFoundException;
@@ -59,5 +61,16 @@ public class UserServiceImpl implements UserService {
         log.info("[Delete user by email] Method start, user email: {}", userEmail);
 
         userRepository.deleteByEmail(userEmail);
+    }
+
+    @Override
+    public boolean hasValidCredentials(UserLoginDTO userLoginDTO) {
+        log.info("[Has valid credentials] Method start, user email: {}",
+                userLoginDTO.getEmail());
+
+        final User user = userRepository.findByEmail(userLoginDTO.getEmail())
+                .orElseThrow(() -> new BadCredentialsException(userLoginDTO.getEmail()));
+
+        return userLoginDTO.getPassword().equals(user.getPassword());
     }
 }

@@ -23,13 +23,13 @@ public class GlobalExceptionHandlerTest {
         final ResponseEntity<ErrorResponseDTO> response =
                 globalExceptionHandler.handleUserNotFound(userNotFoundException);
 
-        Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        Assert.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         Assert.assertNotNull(response.getBody());
         Assert.assertEquals(
-                ErrorCodeEnum.L001.getErrorMessage(), response.getBody().getError()
+                ErrorCodeEnum.L102.getErrorMessage(), response.getBody().getError()
         );
         Assert.assertEquals(
-                ErrorCodeEnum.L001.getErrorCode(), response.getBody().getErrorCode()
+                ErrorCodeEnum.L102.getErrorCode(), response.getBody().getErrorCode()
         );
     }
 
@@ -66,6 +66,24 @@ public class GlobalExceptionHandlerTest {
         );
         Assert.assertEquals(
                 ErrorCodeEnum.L100.getErrorMessage(), response.getBody().getError()
+        );
+    }
+
+    @Test
+    public final void testHandleBadCredentials() {
+        final BadCredentialsException badCredentialsException =
+                new BadCredentialsException(USER_EMAIL);
+
+        final ResponseEntity<ErrorResponseDTO> response =
+                globalExceptionHandler.handleBadCredentials(badCredentialsException);
+
+        Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        Assert.assertNotNull(response.getBody());
+        Assert.assertEquals(
+                ErrorCodeEnum.L001.getErrorCode(), response.getBody().getErrorCode()
+        );
+        Assert.assertEquals(
+                ErrorCodeEnum.L001.getErrorMessage(), response.getBody().getError()
         );
     }
 

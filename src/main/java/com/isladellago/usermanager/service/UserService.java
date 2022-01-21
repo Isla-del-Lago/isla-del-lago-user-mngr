@@ -1,5 +1,6 @@
 package com.isladellago.usermanager.service;
 
+import com.isladellago.usermanager.domain.dto.UserLoginDTO;
 import com.isladellago.usermanager.domain.model.User;
 
 import java.util.List;
@@ -37,4 +38,13 @@ public interface UserService {
      * @param userEmail User email to be deleted.
      */
     void deleteUserByEmail(String userEmail);
+
+    /**
+     * Validates if the given credentials belogs to
+     * a registered user.
+     *
+     * @param userLoginDTO User credentials.
+     * @return If the credentials are valid.
+     */
+    boolean hasValidCredentials(UserLoginDTO userLoginDTO);
 }

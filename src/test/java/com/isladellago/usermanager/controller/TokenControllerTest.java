@@ -3,6 +3,7 @@ package com.isladellago.usermanager.controller;
 import com.isladellago.usermanager.domain.dto.SuccessfulLoginDTO;
 import com.isladellago.usermanager.domain.dto.UserLoginDTO;
 import com.isladellago.usermanager.domain.model.User;
+import com.isladellago.usermanager.exception.BadCredentialsException;
 import com.isladellago.usermanager.service.TokenService;
 import com.isladellago.usermanager.service.UserService;
 import org.junit.Assert;
@@ -59,6 +60,8 @@ public class TokenControllerTest {
 
     @Test
     public final void loginTest() {
+        Mockito.when(userService.hasValidCredentials(userLoginDTO))
+                .thenReturn(true);
         Mockito.when(userService.getUserByEmail(LOGIN_EMAIL))
                 .thenReturn(user);
 
@@ -70,5 +73,13 @@ public class TokenControllerTest {
 
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assert.assertEquals(TOKEN, response.getBody().getToken());
+    }
+
+    @Test(expected = BadCredentialsException.class)
+    public final void loginFailsTest() {
+        Mockito.when(userService.hasValidCredentials(userLoginDTO))
+                .thenReturn(false);
+
+        tokenController.login(userLoginDTO);
     }
 }
