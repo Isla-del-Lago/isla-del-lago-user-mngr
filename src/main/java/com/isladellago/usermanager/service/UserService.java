@@ -1,5 +1,6 @@
 package com.isladellago.usermanager.service;
 
+import com.isladellago.usermanager.domain.dto.CreateUserDTO;
 import com.isladellago.usermanager.domain.dto.UserLoginDTO;
 import com.isladellago.usermanager.domain.model.User;
 
@@ -47,4 +48,13 @@ public interface UserService {
      * @return If the credentials are valid.
      */
     boolean hasValidCredentials(UserLoginDTO userLoginDTO);
+
+    /**
+     * This method helps to map a new user given
+     * data to create the user.
+     *
+     * @param createUserDTO Data to create the user.
+     * @return User entity mapped.
+     */
+    User mapUserFromCreateUserDTO(CreateUserDTO createUserDTO);
 }

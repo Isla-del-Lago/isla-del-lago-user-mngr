@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,14 +26,11 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/create")
-    public final ResponseEntity<CreateUserResponseDTO> create(@RequestBody CreateUserDTO createUserDTO) {
+    public final ResponseEntity<CreateUserResponseDTO> create(
+            @Validated @RequestBody CreateUserDTO createUserDTO) {
         log.info("[Create user] Request received, user email: {}", createUserDTO.getEmail());
 
-        final User user = User.builder()
-                .email(createUserDTO.getEmail())
-                .password(createUserDTO.getPassword())
-                .fullName(createUserDTO.getFullName())
-                .build();
+        final User user = userService.mapUserFromCreateUserDTO(createUserDTO);
 
         final Integer userId = userService.createUser(user);
 

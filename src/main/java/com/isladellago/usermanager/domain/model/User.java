@@ -1,6 +1,7 @@
 package com.isladellago.usermanager.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,6 +39,10 @@ public final class User implements UserDetails {
     @Column(name = "creation_date")
     @JsonIgnore
     private final Date creationDate = new Date();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apartment_id", nullable = false)
+    private Apartment apartment;
 
     @Transient
     @JsonIgnore

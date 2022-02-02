@@ -1,12 +1,12 @@
 package com.isladellago.usermanager.service.impl;
 
+import com.isladellago.usermanager.domain.dto.CreateUserDTO;
 import com.isladellago.usermanager.domain.dto.UserLoginDTO;
+import com.isladellago.usermanager.domain.model.Apartment;
+import com.isladellago.usermanager.domain.model.ApartmentRepository;
 import com.isladellago.usermanager.domain.model.User;
 import com.isladellago.usermanager.domain.model.UserRepository;
-import com.isladellago.usermanager.exception.BadCredentialsException;
-import com.isladellago.usermanager.exception.ErrorCreatingUserException;
-import com.isladellago.usermanager.exception.UserAlreadyCreatedException;
-import com.isladellago.usermanager.exception.UserNotFoundException;
+import com.isladellago.usermanager.exception.*;
 import com.isladellago.usermanager.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,6 +22,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final ApartmentRepository apartmentRepository;
 
     @Override
     public Integer createUser(User user) {
@@ -72,5 +73,25 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new BadCredentialsException(userLoginDTO.getEmail()));
 
         return userLoginDTO.getPassword().equals(user.getPassword());
+    }
+
+    @Override
+    public User mapUserFromCreateUserDTO(CreateUserDTO createUserDTO) {
+        log.info("[Map user entity from create user dto] Method start, user dto: {}",
+                createUserDTO.toString());
+
+        if (!apartmentRepository.existsById(createUserDTO.getApartmentId())) {
+            throw new ApartmentNotFoundException(createUserDTO.getApartmentId());
+        }
+
+        final Apartment apartment =
+                apartmentRepository.getById(createUserDTO.getApartmentId());
+
+        return User.builder()
+                .email(createUserDTO.getEmail())
+                .password(createUserDTO.getPassword())
+                .fullName(createUserDTO.getFullName())
+                .apartment(apartment)
+                .build();
     }
 }

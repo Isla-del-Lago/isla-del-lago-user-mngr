@@ -6,7 +6,8 @@ public enum ErrorCodeEnum {
     L001("L-001", "Email or password incorrect"),
     L100("L-100", "Error creating user, please try again"),
     L101("L-101", "There is an user created with this email or full name"),
-    L102("L-102", "User not found");
+    L102("L-102", "User not found"),
+    L200("L-200", "Apartment not found");
 
     private final String errorMessage;
     private final String errorCode;
