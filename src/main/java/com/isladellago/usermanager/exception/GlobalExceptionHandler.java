@@ -72,4 +72,18 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(errorResponseDTO);
     }
+
+    @ExceptionHandler(ApartmentNotFoundException.class)
+    public final ResponseEntity<ErrorResponseDTO> handleApartmentNotFound(
+            ApartmentNotFoundException ex) {
+        log.error("Apartment with id: {} not found", ex.getApartmentId());
+
+        final ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
+                .error(ErrorCodeEnum.L200.getErrorMessage())
+                .errorCode(ErrorCodeEnum.L200.getErrorCode())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(errorResponseDTO);
+    }
 }
