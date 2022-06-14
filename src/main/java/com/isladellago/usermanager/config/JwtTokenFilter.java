@@ -23,8 +23,8 @@ import java.util.List;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private TokenService tokenService;
-    private UserService userService;
+    private final TokenService tokenService;
+    private final UserService userService;
 
     @Autowired
     public JwtTokenFilter(
