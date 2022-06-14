@@ -6,6 +6,8 @@ import com.isladellago.usermanager.domain.model.User;
 import com.isladellago.usermanager.exception.BadCredentialsException;
 import com.isladellago.usermanager.service.TokenService;
 import com.isladellago.usermanager.service.UserService;
+import com.isladellago.usermanager.util.CustomHttpHeaders;
+import com.isladellago.usermanager.util.PathUtils;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -57,5 +59,15 @@ public class TokenController {
         log.info("[Login] Generated uuid and token: {}", loginResponse.toString());
 
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @PostMapping(PathUtils.Token.VALIDATE_PATH)
+    public ResponseEntity<Boolean> validate(
+            @RequestHeader(CustomHttpHeaders.UUID_HEADER) UUID uuid,
+            @PathVariable(PathUtils.PathParam.JWT_TOKEN) String jwtToken) {
+        log.info("[Validate controller] Uuid: {}", uuid);
+
+        return ResponseEntity.ok()
+                .body(tokenService.validate(jwtToken));
     }
 }

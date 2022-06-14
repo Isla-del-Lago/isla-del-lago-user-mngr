@@ -1,5 +1,6 @@
 package com.isladellago.usermanager.config;
 
+import com.isladellago.usermanager.util.PathUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -43,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/v1/user/health").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/user/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/user/create").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/user" + PathUtils.Token.VALIDATE_PATH).permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(
