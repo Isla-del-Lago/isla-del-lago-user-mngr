@@ -4,6 +4,7 @@ import com.isladellago.usermanager.domain.dto.SuccessfulLoginDTO;
 import com.isladellago.usermanager.domain.dto.UserLoginDTO;
 import com.isladellago.usermanager.domain.model.User;
 import com.isladellago.usermanager.exception.BadCredentialsException;
+import com.isladellago.usermanager.service.AuthService;
 import com.isladellago.usermanager.service.UserService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,6 +29,9 @@ public class AuthControllerTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private AuthService authService;
 
     @InjectMocks
     private AuthController authController;
@@ -54,21 +58,13 @@ public class AuthControllerTest {
 
     @Test
     public final void loginTest() {
-        Mockito.when(userService.hasValidCredentials(userLoginDTO))
-                .thenReturn(true);
-        Mockito.when(userService.getUserByEmail(LOGIN_EMAIL))
-                .thenReturn(user);
+        final SuccessfulLoginDTO successfulLoginDTO = SuccessfulLoginDTO.builder().build();
+
+        Mockito.when(authService.login(userLoginDTO))
+                .thenReturn(successfulLoginDTO);
 
         final SuccessfulLoginDTO response = authController.login(userLoginDTO);
         
-        Assert.assertEquals(TOKEN, response.getToken());
-    }
-
-    @Test(expected = BadCredentialsException.class)
-    public final void loginFailsTest() {
-        Mockito.when(userService.hasValidCredentials(userLoginDTO))
-                .thenReturn(false);
-
-        authController.login(userLoginDTO);
+        Assert.assertEquals(successfulLoginDTO, response);
     }
 }
