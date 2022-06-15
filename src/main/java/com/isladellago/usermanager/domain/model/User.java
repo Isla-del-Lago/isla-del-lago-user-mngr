@@ -1,16 +1,11 @@
 package com.isladellago.usermanager.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -20,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ToString
-public final class User implements UserDetails {
+public final class User {
 
     @Id
     @Column(name = "user_id")
@@ -45,38 +40,4 @@ public final class User implements UserDetails {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "apartment_id", nullable = false)
     private Apartment apartment;
-
-    @Transient
-    @JsonIgnore
-    private boolean enabled = true;
-
-    @Override
-    @JsonIgnore
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    @JsonIgnore
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isAccountNonExpired() {
-        return enabled;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isAccountNonLocked() {
-        return enabled;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isCredentialsNonExpired() {
-        return enabled;
-    }
 }
