@@ -81,10 +81,6 @@ public class UserServiceImplTest {
         Assert.assertNotNull(userFromEmail);
         Assert.assertEquals(user, userFromEmail);
         Assert.assertEquals(EMAIL, user.getEmail());
-        Assert.assertFalse(user.isAccountNonExpired());
-        Assert.assertFalse(user.isAccountNonLocked());
-        Assert.assertFalse(user.isCredentialsNonExpired());
-        Assert.assertEquals(0, user.getAuthorities().size());
     }
 
     @Test(expected = UserNotFoundException.class)

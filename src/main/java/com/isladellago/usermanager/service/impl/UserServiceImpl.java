@@ -1,6 +1,7 @@
 package com.isladellago.usermanager.service.impl;
 
 import com.isladellago.usermanager.domain.dto.CreateUserDTO;
+import com.isladellago.usermanager.domain.dto.SuccessfulLoginDTO;
 import com.isladellago.usermanager.domain.dto.UserLoginDTO;
 import com.isladellago.usermanager.domain.model.Apartment;
 import com.isladellago.usermanager.domain.model.ApartmentRepository;

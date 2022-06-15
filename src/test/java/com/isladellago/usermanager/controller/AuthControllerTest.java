@@ -4,7 +4,6 @@ import com.isladellago.usermanager.domain.dto.SuccessfulLoginDTO;
 import com.isladellago.usermanager.domain.dto.UserLoginDTO;
 import com.isladellago.usermanager.domain.model.User;
 import com.isladellago.usermanager.exception.BadCredentialsException;
-import com.isladellago.usermanager.service.TokenService;
 import com.isladellago.usermanager.service.UserService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,12 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.UUID;
 
-public class TokenControllerTest {
+public class AuthControllerTest {
 
     private static final String LOGIN_EMAIL = "admin@gmail.com";
     private static final String LOGIN_PASSWORD = "Pruebas1234";
@@ -30,13 +27,10 @@ public class TokenControllerTest {
     private User user;
 
     @Mock
-    private TokenService tokenService;
-
-    @Mock
     private UserService userService;
 
     @InjectMocks
-    private TokenController tokenController;
+    private AuthController authController;
 
     @Before
     public final void initMocks() {
@@ -65,14 +59,9 @@ public class TokenControllerTest {
         Mockito.when(userService.getUserByEmail(LOGIN_EMAIL))
                 .thenReturn(user);
 
-        Mockito.when(tokenService.generateToken(Mockito.any()))
-                .thenReturn(TOKEN);
-
-        final ResponseEntity<SuccessfulLoginDTO> response =
-                tokenController.login(userLoginDTO);
-
-        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assert.assertEquals(TOKEN, response.getBody().getToken());
+        final SuccessfulLoginDTO response = authController.login(userLoginDTO);
+        
+        Assert.assertEquals(TOKEN, response.getToken());
     }
 
     @Test(expected = BadCredentialsException.class)
@@ -80,6 +69,6 @@ public class TokenControllerTest {
         Mockito.when(userService.hasValidCredentials(userLoginDTO))
                 .thenReturn(false);
 
-        tokenController.login(userLoginDTO);
+        authController.login(userLoginDTO);
     }
 }

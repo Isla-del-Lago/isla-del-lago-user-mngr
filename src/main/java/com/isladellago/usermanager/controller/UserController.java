@@ -5,6 +5,7 @@ import com.isladellago.usermanager.domain.dto.CreateUserResponseDTO;
 import com.isladellago.usermanager.domain.model.User;
 import com.isladellago.usermanager.service.UserService;
 import com.isladellago.usermanager.util.CustomHttpHeaders;
+import com.isladellago.usermanager.util.PathUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping(PathUtils.User.ROOT_PATH)
 @CrossOrigin("*") //NOSONAR
 @Log4j2
 @AllArgsConstructor
@@ -25,7 +26,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/create")
+    @PostMapping(PathUtils.User.CREATE_USER)
     public final ResponseEntity<CreateUserResponseDTO> create(
             @Validated @RequestBody CreateUserDTO createUserDTO) {
         log.info("[Create user] Request received, user email: {}", createUserDTO.getEmail());
@@ -69,7 +70,7 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping("/email")
+    @GetMapping(PathUtils.User.GET_USER_BY_EMAIL)
     public final ResponseEntity<User> getUserByEmail(
             @RequestHeader(CustomHttpHeaders.UUID_HEADER) UUID uuid,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
