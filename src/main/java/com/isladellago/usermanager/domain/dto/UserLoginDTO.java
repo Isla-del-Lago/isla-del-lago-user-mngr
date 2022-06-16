@@ -1,7 +1,9 @@
 package com.isladellago.usermanager.domain.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * This class maps the fields that the user enter to login
@@ -9,8 +11,10 @@ import lombok.Getter;
  */
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public final class UserLoginDTO {
 
-    private final String email;
-    private final String password;
+    private String email;
+    private String password;
 }
