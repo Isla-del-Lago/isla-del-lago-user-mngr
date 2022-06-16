@@ -4,6 +4,7 @@ import com.isladellago.usermanager.domain.dto.ValidateTokenReq;
 import com.isladellago.usermanager.service.client.SecurityManagerClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -23,7 +24,7 @@ public class RequestInterceptor implements HandlerInterceptor {
         final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (ObjectUtils.isEmpty(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
-            response.setStatus(400);
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
             return false;
         }
 
@@ -33,7 +34,7 @@ public class RequestInterceptor implements HandlerInterceptor {
         ).getIsValid();
 
         if (!tokenIsValid) {
-            response.setStatus(401);
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;
         }
 
